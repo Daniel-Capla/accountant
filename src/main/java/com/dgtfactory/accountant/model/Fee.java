@@ -1,18 +1,33 @@
 package com.dgtfactory.accountant.model;
 
 import com.dgtfactory.accountant.model.enums.TransactionType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.UUID;
 
-@MappedSuperclass
-public abstract class Fee {
+@Entity
+public class Fee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id = null;
+
     @Enumerated(EnumType.STRING)
-    protected TransactionType transactionType;
-    protected BigDecimal fee;
-    protected String feeCurrency;
+    TransactionType transactionType;
+
+    BigDecimal fee;
+    String feeCurrency;
+
+    @CreationTimestamp(source = SourceType.DB)
+    Instant createdAt = null;
 
     public TransactionType getTransactionType() {
         return transactionType;
