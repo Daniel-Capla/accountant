@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
@@ -15,19 +16,26 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@Table
 public class Fee {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id = null;
+    private UUID id = null;
 
     @Enumerated(EnumType.STRING)
-    TransactionType transactionType;
+    private TransactionType transactionType;
 
     BigDecimal fee;
-    String feeCurrency;
+    private String feeCurrency;
 
     @CreationTimestamp(source = SourceType.DB)
-    Instant createdAt = null;
+    private Instant createdAt = null;
+
+    private String comment;
+
+    public UUID getId() {
+        return id;
+    }
 
     public TransactionType getTransactionType() {
         return transactionType;
@@ -53,6 +61,14 @@ public class Fee {
         this.feeCurrency = feeCurrency;
     }
 
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -60,6 +76,4 @@ public class Fee {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-    protected String comment;
 }

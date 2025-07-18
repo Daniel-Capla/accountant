@@ -7,10 +7,16 @@ import java.math.BigDecimal;
 
 public class FeeInput {
     @NotNull
-    TransactionType transactionType;
+    private TransactionType transactionType;
     @NotNull
-    BigDecimal amount;
+    private BigDecimal amount;
+    private String currency = "EUR";
 
+    // Default constructor pre Jackson
+    public FeeInput() {
+    }
+
+    // Gettery a settery
     public TransactionType getTransactionType() {
         return transactionType;
     }
@@ -35,5 +41,12 @@ public class FeeInput {
         this.currency = currency;
     }
 
-    String currency = "EUR";
+    @Override
+    public String toString() {
+        return "FeeInput{" +
+                "transactionType=" + transactionType +
+                ", amount=" + amount +
+                ", currency='" + currency + '\'' +
+                '}';
+    }
 }

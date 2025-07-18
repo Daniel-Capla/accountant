@@ -1,5 +1,6 @@
 package com.dgtfactory.accountant.service;
 
+import com.dgtfactory.accountant.model.Fee;
 import com.dgtfactory.accountant.model.dto.FeeInput;
 import com.dgtfactory.accountant.model.dto.FeeOutput;
 import com.dgtfactory.accountant.repository.FeeRepository;
@@ -23,13 +24,18 @@ public class FeeService {
             case PERCENTAGE -> calculatePercentageFee(feeInput);
         };
 
-        FeeOutput result = new FeeOutput();
-        result.setFee(resultFee);
-        result.setCurrency(feeInput.getCurrency());
-        result.setTransactionType(feeInput.getTransactionType());
-        result.setComment("dummy comment");
+        Fee fee = new Fee();
+        fee.setTransactionType(feeInput.getTransactionType());
+        fee.setFee(resultFee);
+        fee.setFeeCurrency(feeInput.getCurrency());
+        fee.setComment("dummy comment");
 
-        return result;
+        Fee savedFee = feeRepository.save(fee);
+
+        FeeOutput feeOutput = mapToFeeOutput(savedFee);
+        feeRepository.save(fee);
+
+        return feeOutput;
     }
 
     private BigDecimal calculateFixedFee(FeeInput feeInput) {
@@ -40,5 +46,16 @@ public class FeeService {
         BigDecimal percentage = BigDecimal.valueOf(0.03);
 
         return feeInput.getAmount().multiply(percentage).setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    private FeeOutput mapToFeeOutput(Fee fee) {
+        FeeOutput output = new FeeOutput();
+        output.setFeeId(fee.getId());
+        output.setTransactionType(fee.getTransactionType());
+        output.setFee(fee.getFee());
+        output.setCurrency(fee.getFeeCurrency());
+        output.setCalculatedAt(fee.getCreatedAt());
+        output.setComment(fee.getComment());
+        return output;
     }
 }
