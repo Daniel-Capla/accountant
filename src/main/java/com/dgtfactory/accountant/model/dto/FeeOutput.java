@@ -17,7 +17,6 @@ public class FeeOutput {
     public FeeOutput() {
     }
 
-    // Všetky gettery a settery
     public UUID getFeeId() {
         return feeId;
     }

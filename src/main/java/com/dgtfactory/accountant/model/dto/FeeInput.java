@@ -1,22 +1,26 @@
 package com.dgtfactory.accountant.model.dto;
 
 import com.dgtfactory.accountant.model.enums.TransactionType;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
 public class FeeInput {
-    @NotNull
+    @NotNull(message = "Transaction Type must be provided")
     private TransactionType transactionType;
+
     @NotNull
+    @DecimalMin(value = "10.00", message = "Amount must be greater than 10")
     private BigDecimal amount;
+
+    @Size(min = 3, max = 3, message = "Currency must be 3 characters long")
     private String currency = "EUR";
 
-    // Default constructor pre Jackson
     public FeeInput() {
     }
 
-    // Gettery a settery
     public TransactionType getTransactionType() {
         return transactionType;
     }

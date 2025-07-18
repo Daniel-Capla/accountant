@@ -3,6 +3,7 @@ package com.dgtfactory.accountant.controller;
 import com.dgtfactory.accountant.model.dto.FeeInput;
 import com.dgtfactory.accountant.model.dto.FeeOutput;
 import com.dgtfactory.accountant.service.FeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class FeeController {
     @PostMapping("/fee")
     public ResponseEntity<FeeOutput> fee(
             @RequestParam String key,
-            @RequestBody FeeInput feeInput
+            @RequestBody @Valid FeeInput feeInput
     ) {
         ensureCorrectKey(key);
         FeeOutput feeOutput = feeService.calculateFee(feeInput);
